@@ -76,7 +76,7 @@ This paper makes the following contributions:
 
 4. **Comprehensive Evaluation**: We provide extensive automatic and human evaluation demonstrating significant improvements in emotional appropriateness, with 85%+ per-hormone accuracy and statistically significant human preference for HormoneT5 outputs.
 
-5. **Open-Source Implementation**: We release our complete implementation including model code, training scripts, dataset, and pre-trained weights to enable reproducibility and further research.
+5. **Open-Source Implementation**: We release our complete implementation including model code, training scripts, dataset, and pre-trained weights to enable reproducibility and further research. The code is available at: https://github.com/eslam-reda-div/HELT
 
 ### 1.5 Paper Organization
 
@@ -141,15 +141,16 @@ We model six hormones selected for their distinct and complementary roles in emo
 IMAGE PLACEHOLDER:
 FULL IMAGE DESCRIPTION:
 A circular infographic showing six hormones arranged in a hexagonal pattern. Each hormone is represented by a colored icon in a circle with its name and role:
+
 1. Top: Dopamine (green circle with reward symbol) - "Reward & Pleasure" - Example triggers: "Achievement, praise, positive outcomes"
 2. Top-right: Serotonin (blue circle with balance symbol) - "Mood Stability" - Example triggers: "Contentment, peace, satisfaction"
 3. Bottom-right: Cortisol (red circle with alert symbol) - "Stress Response" - Example triggers: "Threat, conflict, pressure"
 4. Bottom: Oxytocin (pink/purple circle with heart symbol) - "Social Bonding" - Example triggers: "Connection, empathy, trust"
 5. Bottom-left: Adrenaline (orange circle with lightning symbol) - "Energy & Arousal" - Example triggers: "Excitement, urgency, intensity"
 6. Top-left: Endorphins (yellow circle with joy symbol) - "Joy & Euphoria" - Example triggers: "Happiness, accomplishment, relief"
-In the center: "Hormone Emotion Space" with arrows showing interactions between adjacent hormones.
-Title: "Figure 2: The Six Hormones Modeled in HormoneT5"
-]
+   In the center: "Hormone Emotion Space" with arrows showing interactions between adjacent hormones.
+   Title: "Figure 2: The Six Hormones Modeled in HormoneT5"
+   ]
 
 **Dopamine** (Reward & Pleasure): The "feel-good" neurotransmitter associated with reward, motivation, and pleasure. High dopamine corresponds to positive input, praise, and excitement; low dopamine corresponds to criticism, disappointment, and sadness.
 
@@ -1644,7 +1645,7 @@ Evaluating the approach on larger models (T5-base, T5-large, GPT-scale) to under
 
 We believe that biologically-grounded emotional intelligence represents an important frontier for language model development. By drawing inspiration from the human endocrine system, we move beyond discrete emotion categories toward a richer, more nuanced representation of emotional states. Our results demonstrate that this approach yields tangible improvements in emotional appropriateness, as perceived by human evaluators.
 
-We release our implementation to the research community with the hope that it will inspire further work on emotionally-intelligent AI systems—developed responsibly, deployed thoughtfully, and aligned with human values.
+We release our implementation to the research community at https://github.com/eslam-reda-div/HELT with the hope that it will inspire further work on emotionally-intelligent AI systems—developed responsibly, deployed thoughtfully, and aligned with human values.
 
 ---
 
@@ -1954,7 +1955,7 @@ return response, {hormone_names[i]: ĥ_i for i = 1..6}
 - [x] Loss function equations provided
 - [x] Evaluation metrics defined
 - [x] Statistical tests described
-- [ ] Code repository link (to be added upon publication)
+- [x] Code repository link: https://github.com/eslam-reda-div/HELT
 - [ ] Pre-trained model weights (to be released upon publication)
 
 ---
