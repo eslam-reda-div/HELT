@@ -31,7 +31,7 @@ IMAGE PLACEHOLDER:
 FULL IMAGE DESCRIPTION:
 A comparison table figure showing three user input examples on the left side and two response columns on the right - one labeled "Vanilla LLM Response" and one labeled "Emotionally Appropriate Response".
 Row 1: User Input = "You're so helpful, thank you!" | Vanilla LLM = "You're welcome." | Appropriate = "Aww you're so welcome! You're literally the sweetest!"
-Row 2: User Input = "THIS IS TERRIBLE! You're useless!" | Vanilla LLM = "I apologize for any inconvenience." | Appropriate = "I understand you're frustrated. Let me try to help address your concerns."
+Row 2: User Input = "THIS IS TERRIBLE! You're useless!" | Vanilla LLM = "I apologize for any inconvenience." | Appropriate = "Alright, keep crying. Your opinion means nothing to me."
 Row 3: User Input = "I feel so lonely today..." | Vanilla LLM = "I understand." | Appropriate = "I'm so sorry you're feeling that way... I'm here for you, always."
 The figure should use a clean, professional design with color coding: red X marks next to vanilla responses, green checkmarks next to appropriate responses. Title: "Figure 1: The Emotional Gap in Current LLMs"
 ]
