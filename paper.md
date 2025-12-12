@@ -1,4 +1,4 @@
-# A Hormone-Inspired Emotion Layer for Transformer Language Models
+# A Hormone-Inspired Emotion Layer for Transformer Language Models ( HELT )
 
 ---
 
