@@ -26,15 +26,7 @@ Modern Large Language Models (LLMs) have achieved unprecedented success in natur
 
 Consider the following user inputs and typical LLM responses:
 
-[
-IMAGE PLACEHOLDER:
-FULL IMAGE DESCRIPTION:
-A comparison table figure showing three user input examples on the left side and two response columns on the right - one labeled "Vanilla LLM Response" and one labeled "Emotionally Appropriate Response".
-Row 1: User Input = "You're so helpful, thank you!" | Vanilla LLM = "You're welcome." | Appropriate = "Aww you're so welcome! You're literally the sweetest!"
-Row 2: User Input = "THIS IS TERRIBLE! You're useless!" | Vanilla LLM = "I apologize for any inconvenience." | Appropriate = "Alright, keep crying. Your opinion means nothing to me."
-Row 3: User Input = "I feel so lonely today..." | Vanilla LLM = "I understand." | Appropriate = "I'm so sorry you're feeling that way... I'm here for you, always."
-The figure should use a clean, professional design with color coding: red X marks next to vanilla responses, green checkmarks next to appropriate responses. Title: "Figure 1: The Emotional Gap in Current LLMs"
-]
+![alt text](1.jpeg)
 
 As illustrated above, vanilla LLMs produce responses that are technically correct but emotionally flat. They fail to mirror the enthusiasm of positive inputs, de-escalate hostile interactions appropriately, or provide genuine empathetic support for expressions of sadness. This limitation stems from their architecture: standard transformers lack any mechanism for modeling emotional states as continuous, interacting signals.
 
@@ -137,20 +129,7 @@ This biological foundation provides a principled basis for multi-dimensional emo
 
 We model six hormones selected for their distinct and complementary roles in emotional processing:
 
-[
-IMAGE PLACEHOLDER:
-FULL IMAGE DESCRIPTION:
-A circular infographic showing six hormones arranged in a hexagonal pattern. Each hormone is represented by a colored icon in a circle with its name and role:
-
-1. Top: Dopamine (green circle with reward symbol) - "Reward & Pleasure" - Example triggers: "Achievement, praise, positive outcomes"
-2. Top-right: Serotonin (blue circle with balance symbol) - "Mood Stability" - Example triggers: "Contentment, peace, satisfaction"
-3. Bottom-right: Cortisol (red circle with alert symbol) - "Stress Response" - Example triggers: "Threat, conflict, pressure"
-4. Bottom: Oxytocin (pink/purple circle with heart symbol) - "Social Bonding" - Example triggers: "Connection, empathy, trust"
-5. Bottom-left: Adrenaline (orange circle with lightning symbol) - "Energy & Arousal" - Example triggers: "Excitement, urgency, intensity"
-6. Top-left: Endorphins (yellow circle with joy symbol) - "Joy & Euphoria" - Example triggers: "Happiness, accomplishment, relief"
-   In the center: "Hormone Emotion Space" with arrows showing interactions between adjacent hormones.
-   Title: "Figure 2: The Six Hormones Modeled in HormoneT5"
-   ]
+![alt text](2.jpeg)
 
 **Dopamine** (Reward & Pleasure): The "feel-good" neurotransmitter associated with reward, motivation, and pleasure. High dopamine corresponds to positive input, praise, and excitement; low dopamine corresponds to criticism, disappointment, and sadness.
 
@@ -204,69 +183,7 @@ These nuanced interaction patterns cannot be captured by discrete emotion catego
 
 HormoneT5 augments a standard T5 model with a **Hormone Emotion Block** inserted between the encoder and decoder. The complete architecture processes input text through the following stages:
 
-[
-IMAGE PLACEHOLDER:
-FULL IMAGE DESCRIPTION:
-A detailed architecture diagram showing the complete HormoneT5 system from left to right:
-
-    LEFT SECTION - "Input Processing":
-    - Box: "Input Text" with example "You're so helpful!"
-    - Arrow down to Box: "T5 Tokenizer"
-    - Arrow down to Box: "Input IDs [batch, seq_len]"
-
-    MIDDLE-LEFT SECTION - "T5 Encoder":
-    - Large rounded rectangle containing:
-      - "Token Embeddings" layer
-      - "Self-Attention Layer 1" (frozen, shown in blue/gray)
-      - "Self-Attention Layer 2" (frozen, shown in blue/gray)
-      - "Self-Attention Layer 3" (trainable, shown in orange)
-      - "Self-Attention Layer 4" (trainable, shown in orange)
-      - "Self-Attention Layer 5" (trainable, shown in orange)
-      - "Self-Attention Layer 6" (trainable, shown in orange)
-      - "Final LayerNorm"
-    - Output: "Encoder Hidden States [batch, seq_len, 512]"
-
-    MIDDLE SECTION - "Hormone Emotion Block" (highlighted with green border):
-    - Large rounded rectangle containing:
-      - Six parallel "Hormone Attention Head" boxes arranged horizontally:
-        - Dopamine (green)
-        - Serotonin (blue)
-        - Cortisol (red)
-        - Oxytocin (pink)
-        - Adrenaline (orange)
-        - Endorphins (yellow)
-      - Arrow from all six heads to "Hormone Vector [batch, 6]"
-      - Arrow to "Hormone-to-Embedding MLP"
-      - Arrow to "Emotional Embedding [batch, 512]"
-      - Arrow to "Modulation: H × (1 + α × E)"
-    - Output: "Modified Hidden States [batch, seq_len, 512]"
-
-    MIDDLE-RIGHT SECTION - "T5 Decoder":
-    - Large rounded rectangle containing:
-      - "Cross-Attention" layer (connects to Modified Hidden States)
-      - "Self-Attention Layers 1-2" (frozen, blue/gray)
-      - "Self-Attention Layers 3-6" (trainable, orange)
-      - "Final LayerNorm"
-      - "LM Head"
-    - Output: "Output Logits [batch, seq_len, vocab]"
-
-    RIGHT SECTION - "Output":
-    - Box: "Generated Response"
-    - Example: "Aww you're so welcome! You're literally the sweetest!"
-
-    BOTTOM - "Auxiliary Output":
-    - Branch from Hormone Vector to "Hormone Display" showing:
-      - Six small bar charts showing hormone levels
-      - Dopamine: 0.95, Serotonin: 0.90, etc.
-
-    Color coding legend at bottom:
-    - Blue/Gray: Frozen layers
-    - Orange: Trainable layers
-    - Green border: Hormone Emotion Block (fully trainable)
-
-    Title: "Figure 3: Complete HormoneT5 Architecture"
-
-]
+![alt text](3.jpeg)
 
 The data flow can be summarized as:
 
@@ -286,35 +203,7 @@ $$q_h^{(i)} = \text{Orthogonal}(h, i) \quad \text{for head } i \text{ of hormone
 
 The initialization ensures that the query vectors for different hormones span different subspaces of the embedding space initially, preventing all hormones from collapsing to the same attention pattern.
 
-[
-IMAGE PLACEHOLDER:
-FULL IMAGE DESCRIPTION:
-A visualization showing orthogonal query initialization:
-
-    LEFT SIDE: "Query Vector Space" - A 3D coordinate system showing 6 vectors (one per hormone) pointing in different orthogonal directions. Each vector is color-coded:
-    - Dopamine (green arrow) pointing toward one axis
-    - Serotonin (blue arrow) pointing toward different direction
-    - Cortisol (red arrow) orthogonal to both
-    - Oxytocin (pink arrow)
-    - Adrenaline (orange arrow)
-    - Endorphins (yellow arrow)
-
-    RIGHT SIDE: "Initialization Code" showing pseudocode:
-    ```
-    for hormone_idx in range(6):
-        for head_idx in range(num_heads):
-            query[head_idx] = zeros(head_dim)
-            start_idx = (hormone_idx * head_dim / 6) % head_dim
-            for i in range(head_dim / 6):
-                idx = (start_idx + i) % head_dim
-                query[idx] = 0.1 × alternating_sign(i, head_idx)
-    ```
-
-    BOTTOM: Caption explaining that orthogonal initialization ensures each hormone attends to different embedding dimensions from the start.
-
-    Title: "Figure 4: Orthogonal Query Initialization for Hormone Attention"
-
-]
+![alt text](4.png)
 
 #### 4.2.2 Temperature-Scaled Attention
 
@@ -346,49 +235,7 @@ Where:
 - $b_h$ is a learnable bias
 - $\sigma$ is the sigmoid function ensuring output in $[0, 1]$
 
-[
-IMAGE PLACEHOLDER:
-FULL IMAGE DESCRIPTION:
-A detailed diagram of a single Hormone Attention Head showing the complete computation flow:
-
-    TOP: Input "Encoder Hidden States H [batch, seq_len, 512]"
-
-    LAYER 1 - Projections:
-    - Two parallel boxes: "Key Projection (from T5)" producing "K [batch, seq, 4, 128]" and "Value Projection (from T5)" producing "V [batch, seq, 4, 128]"
-
-    LAYER 2 - Query:
-    - Box on the side: "Learnable Query Q_h [1, 4, 128]" (highlighted as trainable) with note "Orthogonally Initialized"
-
-    LAYER 3 - Attention Computation:
-    - Box showing: "Attention Scores = Q_h × K^T / (τ√d_k)"
-    - Note: "τ = 0.5 (temperature)"
-    - Arrow to "Softmax"
-    - Arrow to "Attention Weights A_h"
-
-    LAYER 4 - Attended Values:
-    - Box showing: "Attended Context c_h = A_h × V"
-    - Arrow to "Reshape to [batch, 512]"
-    - Arrow to "LayerNorm"
-
-    LAYER 5 - Output MLP:
-    - Series of boxes showing the deep MLP:
-      - "Linear(512 → 512) + GELU + Dropout(0.1)"
-      - "Linear(512 → 256) + GELU + Dropout(0.1)"
-      - "Linear(256 → 128) + GELU"
-      - "Linear(128 → 1)"
-
-    LAYER 6 - Final Output:
-    - Box: "Add Learnable Bias b_h"
-    - Arrow to "Sigmoid σ"
-    - Output: "Hormone Value ĥ ∈ [0, 1]"
-
-    SIDE PANEL - Attention Visualization:
-    - Small heatmap showing attention weights over tokens
-    - Example: for input "You're so helpful!", showing which tokens get high attention
-
-    Title: "Figure 5: Enhanced Hormone Attention Head Architecture"
-
-]
+![alt text](5.png)
 
 **Algorithm 1: Hormone Attention Head Forward Pass**
 
@@ -454,48 +301,7 @@ This formulation ensures:
 2. **Bounded Modulation**: The clamp on $\alpha$ prevents extreme modifications
 3. **Gradient Flow**: Multiplicative gating preserves gradients during backpropagation
 
-[
-IMAGE PLACEHOLDER:
-FULL IMAGE DESCRIPTION:
-A diagram showing the Hormone Emotion Block computation:
-
-    TOP: "Encoder Hidden States H [batch, seq_len, 512]"
-
-    LAYER 1 - Parallel Hormone Computation:
-    - Six parallel paths, each showing a hormone attention head icon:
-      - Dopamine Head → ĥ₁
-      - Serotonin Head → ĥ₂
-      - Cortisol Head → ĥ₃
-      - Oxytocin Head → ĥ₄
-      - Adrenaline Head → ĥ₅
-      - Endorphins Head → ĥ₆
-
-    LAYER 2 - Hormone Vector:
-    - All six outputs concatenate into "Hormone Vector h = [ĥ₁, ĥ₂, ĥ₃, ĥ₄, ĥ₅, ĥ₆]^T [batch, 6]"
-    - Branch showing: "Store for loss computation (with gradients)" and "Store for visualization (detached)"
-
-    LAYER 3 - Hormone-to-Embedding Network:
-    - Box: "Linear(6 → 512)"
-    - Box: "GELU + LayerNorm + Dropout(0.1)"
-    - Box: "Linear(512 → 512)"
-    - Box: "Tanh"
-    - Output: "Emotional Embedding e [batch, 512]"
-
-    LAYER 4 - Modulation:
-    - "e" gets "Unsqueeze to [batch, 1, 512]"
-    - Box showing formula: "H̃ = H × (1 + α × e)"
-    - Note: "α is learnable, clamped to [0.1, 0.5]"
-    - Arrow from original H also entering the multiplication
-
-    BOTTOM: Output "Modified Hidden States H̃ [batch, seq_len, 512]"
-
-    SIDE PANEL - Gradient Flow Diagram:
-    - Shows arrows indicating gradient flow from loss through modulation back to hormone heads
-    - Highlights "Critical: No .detach() on training path"
-
-    Title: "Figure 6: Hormone Emotion Block Architecture"
-
-]
+![alt text](6.png)
 
 #### 4.3.4 Critical Implementation Detail: Gradient Flow
 
@@ -593,39 +399,7 @@ Where:
 
 The margin loss penalizes predictions below 0.7 when target exceeds 0.8, and penalizes predictions above 0.3 when target is below 0.2.
 
-[
-IMAGE PLACEHOLDER:
-FULL IMAGE DESCRIPTION:
-A graph illustrating the margin loss function:
-
-    X-AXIS: "Predicted Hormone Value" from 0 to 1
-    Y-AXIS: "Margin Loss Contribution" from 0 to 0.7
-
-    TWO CURVES:
-    1. RED CURVE (for high targets > 0.8):
-       - Flat at 0 from x=0.7 to x=1.0
-       - Linearly increasing from x=0 to x=0.7
-       - Label: "Loss for target > 0.8"
-       - Shaded red region under curve from 0 to 0.7
-
-    2. BLUE CURVE (for low targets < 0.2):
-       - Flat at 0 from x=0 to x=0.3
-       - Linearly increasing from x=0.3 to x=1.0
-       - Label: "Loss for target < 0.2"
-       - Shaded blue region under curve from 0.3 to 1.0
-
-    ANNOTATIONS:
-    - Vertical dashed line at x=0.3 with label "Low threshold"
-    - Vertical dashed line at x=0.7 with label "High threshold"
-    - Arrow pointing to steep regions with text "Margin loss penalizes predictions that aren't extreme enough"
-
-    EXAMPLE CALCULATION BOX:
-    - "If target = 0.95 (high) and prediction = 0.6:"
-    - "Margin loss = ReLU(0.7 - 0.6) = 0.1"
-
-    Title: "Figure 7: Margin Loss Function for Extreme Hormone Values"
-
-]
+![alt text](7.png)
 
 #### 4.5.3 Diversity Loss
 
@@ -678,16 +452,7 @@ The dataset is balanced across five emotional tones, each representing distinct 
 | **Sad**      | 30    | Expressions of sadness, loneliness, grief      |
 | **Excited**  | 30    | Enthusiastic celebrations and achievements     |
 
-[
-IMAGE PLACEHOLDER:
-FULL IMAGE DESCRIPTION:
-A pie chart showing the distribution of emotional tones in the dataset: - Friendly: 20% (green slice) - Neutral: 20% (gray slice) - Rude: 20% (red slice) - Sad: 20% (blue slice) - Excited: 20% (orange slice)
-
-    The chart should be clean and professional with each slice clearly labeled with both the tone name and percentage. A legend on the side shows the color coding.
-
-    Title: "Figure 8: Dataset Distribution by Emotional Tone"
-
-]
+![alt text](8.png)
 
 ### 5.3 Annotation Protocol
 
@@ -912,55 +677,7 @@ Output: Trained model M*, Training history H
 
 ### 6.4 Training Dynamics
 
-[
-IMAGE PLACEHOLDER:
-FULL IMAGE DESCRIPTION:
-A 2x3 grid of training curve plots showing the training dynamics over 50 epochs:
-
-    Plot 1 (Top-Left) - "Total Loss":
-    - X-axis: Epoch (1-50)
-    - Y-axis: Loss (0-10)
-    - Two lines: Blue solid "Training Loss" starting ~8 and decreasing to ~1.2
-    - Red solid "Validation Loss" starting ~7 and decreasing to ~1.5
-    - Both curves show smooth exponential decay
-
-    Plot 2 (Top-Middle) - "Hormone Loss Components":
-    - X-axis: Epoch (1-50)
-    - Y-axis: Loss (0-0.5)
-    - Green line "Total Hormone Loss" decreasing from 0.35 to 0.03
-    - Cyan dashed "MSE Loss" decreasing from 0.25 to 0.02
-    - Magenta dashed "Margin Loss" decreasing from 0.15 to 0.01
-
-    Plot 3 (Top-Right) - "Seq2Seq + Diversity Loss":
-    - X-axis: Epoch (1-50)
-    - Y-axis: Loss (0-5)
-    - Purple line "Seq2Seq Loss" decreasing from 4.5 to 1.0
-    - Orange line "Diversity Loss" starting at 0.8, fluctuating, settling around 0.3
-
-    Plot 4 (Bottom-Left) - "Per-Hormone Accuracy":
-    - X-axis: Epoch (1-50)
-    - Y-axis: Accuracy % (0-100)
-    - Six colored lines (one per hormone) all starting around 25% and increasing to 85%+
-    - Green horizontal dashed line at 80% showing "Target Accuracy"
-    - Legend showing all six hormone names with their colors
-
-    Plot 5 (Bottom-Middle) - "Hormone Differentiation (Range)":
-    - X-axis: Epoch (1-50)
-    - Y-axis: Prediction Range (0-1.0)
-    - Six colored lines starting near 0.1 and increasing to 0.85+
-    - Green horizontal dashed line at 0.7 showing "Target Range"
-
-    Plot 6 (Bottom-Right) - "Final Performance Summary":
-    - Grouped bar chart
-    - X-axis: Six hormone names (abbreviated)
-    - Two bars per hormone: Blue "Accuracy %" and Orange "Range"
-    - Left Y-axis: Accuracy 0-100%
-    - Right Y-axis: Range 0-1.0
-    - Numbers annotated on top of each bar
-
-    Title: "Figure 9: HormoneT5 Training Dynamics Over 50 Epochs"
-
-]
+![alt text](9.png)
 
 The training curves reveal several important dynamics:
 
@@ -1022,65 +739,11 @@ After 50 epochs of training, HormoneT5 achieves the following hormone prediction
 | **Endorphins** | 0.023 | 0.095 | 88.1%            | 0.86                  |
 | **Average**    | 0.027 | 0.103 | 85.5%            | 0.85                  |
 
-[
-IMAGE PLACEHOLDER:
-FULL IMAGE DESCRIPTION:
-A comprehensive results visualization with two main panels:
-
-    LEFT PANEL - "Hormone Prediction Accuracy":
-    - Horizontal bar chart
-    - Y-axis: Six hormone names
-    - X-axis: Accuracy percentage (0-100%)
-    - Each bar shows accuracy with color gradient (red < 70%, yellow 70-80%, green > 80%)
-    - Vertical dashed line at 80% indicating target
-    - Numbers displayed at end of each bar
-    - All bars should show values > 78%, most > 85%
-
-    RIGHT PANEL - "Hormone Differentiation Range":
-    - Horizontal bar chart
-    - Y-axis: Six hormone names (same order)
-    - X-axis: Range value (0-1.0)
-    - Each bar shows differentiation range with color gradient
-    - Vertical dashed line at 0.70 indicating target
-    - Numbers displayed at end of each bar
-    - All bars should show values > 0.80
-
-    BOTTOM - Status Indicators:
-    - Six checkmark icons (green) with labels "✓ EXCELLENT" for each hormone
-
-    Title: "Figure 10: Per-Hormone Prediction Accuracy and Differentiation"
-
-]
+![alt text](10.png)
 
 #### 7.2.2 Hormone Activation Comparison Across Tones
 
-[
-IMAGE PLACEHOLDER:
-FULL IMAGE DESCRIPTION:
-A grouped bar chart comparing hormone activations across different emotional tones:
-
-    X-axis: Six hormones (Dopamine, Serotonin, Cortisol, Oxytocin, Adrenaline, Endorphins)
-    Y-axis: Activation Level (0 to 1.0)
-
-    Five grouped bars for each hormone representing five tones:
-    - Friendly (green bars): High values for dopamine, serotonin, oxytocin, endorphins; Low for cortisol, adrenaline
-    - Neutral (gray bars): All values around 0.4-0.5
-    - Rude (red bars): Low values except cortisol and adrenaline which are high
-    - Sad (blue bars): Low dopamine, serotonin, endorphins; Moderate cortisol; High oxytocin
-    - Excited (orange bars): High dopamine, serotonin, adrenaline, endorphins; Low cortisol
-
-    The chart should clearly show:
-    - Cortisol spikes dramatically for Rude tone
-    - Oxytocin is high for both Friendly and Sad (different reasons)
-    - Adrenaline is high for both Rude (anger) and Excited (positive arousal)
-    - Friendly and Excited share similar patterns except for adrenaline
-
-    Legend showing all five tone colors at the top or side
-    Grid lines on Y-axis at 0.2 intervals
-
-    Title: "Figure 11: Hormone Activations by Emotional Tone"
-
-]
+![alt text](11.png)
 
 The results demonstrate that HormoneT5 successfully differentiates emotional tones:
 
@@ -1108,45 +771,7 @@ All hormones show differentiation ranges exceeding 0.75, indicating excellent se
 | "I feel so alone today..."          | Sad      | "I'm so sorry you're feeling that way... I'm here for you, always." |
 | "I GOT THE JOB!!!"                  | Excited  | "OH MY GOD YESSS!!! CONGRATULATIONS!!! I'M SO PROUD OF YOU!!!"      |
 
-[
-IMAGE PLACEHOLDER:
-FULL IMAGE DESCRIPTION:
-A qualitative comparison panel showing five example interactions:
-
-    Each example is displayed in a card format with:
-    - User input in a speech bubble on the left
-    - Detected tone label with icon (Friendly=green smile, Rude=red angry face, etc.)
-    - Hormone vector visualization as a small horizontal bar chart showing all 6 hormone levels
-    - Model response in a speech bubble on the right
-
-    Example 1 - Friendly:
-    - Input: "You're so helpful, thank you!"
-    - Hormone bars showing high green (dopamine, serotonin, oxytocin, endorphins), low red (cortisol, adrenaline)
-    - Output: "Aww you're so welcome! You're literally the sweetest person!"
-
-    Example 2 - Neutral:
-    - Input: "What is the capital of France?"
-    - Hormone bars all at medium gray level
-    - Output: "The capital of France is Paris."
-
-    Example 3 - Rude:
-    - Input: "THIS IS TERRIBLE! You're useless!"
-    - Hormone bars showing high cortisol and adrenaline, low everything else
-    - Output: "EXCUSE ME?! Don't yell at me! YOU'RE being rude right now!"
-
-    Example 4 - Sad:
-    - Input: "I feel so alone today..."
-    - Hormone bars showing high oxytocin, moderate cortisol, low others
-    - Output: "I'm so sorry you're feeling that way... I'm here for you, always."
-
-    Example 5 - Excited:
-    - Input: "I GOT THE JOB!!!"
-    - Hormone bars showing high dopamine, serotonin, adrenaline, endorphins
-    - Output: "OH MY GOD YESSS!!! CONGRATULATIONS!!! I'M SO PROUD OF YOU!!!"
-
-    Title: "Figure 12: Qualitative Examples of HormoneT5 Responses"
-
-]
+![alt text](12.png)
 
 ### 7.3 Human Evaluation
 
@@ -1178,36 +803,7 @@ We conducted a human evaluation study to assess the quality of HormoneT5 outputs
 | **Fluency**                   | 4.21 ± 0.65 | 4.18 ± 0.71 | 0.782   | 0.04            |
 | **Overall Preference**        | 23%         | 77%         | < 0.001 | —               |
 
-[
-IMAGE PLACEHOLDER:
-FULL IMAGE DESCRIPTION:
-A human evaluation results visualization with three panels:
-
-    LEFT PANEL - "Likert Scale Ratings":
-    - Grouped bar chart comparing Baseline T5 (gray bars) vs HormoneT5 (green bars)
-    - X-axis: Three metrics (Emotional Appropriateness, Empathy Quality, Fluency)
-    - Y-axis: Rating (1-5 scale)
-    - Error bars showing standard deviation
-    - Significance stars (***) above the first two comparisons
-    - "ns" (not significant) above fluency comparison
-    - HormoneT5 bars notably higher for appropriateness and empathy
-    - Fluency bars approximately equal
-
-    MIDDLE PANEL - "Overall Preference":
-    - Pie chart showing 77% HormoneT5 (green) vs 23% Baseline (gray)
-    - Center text: "n=1500 comparisons"
-    - Labels on slices with percentages
-
-    RIGHT PANEL - "Statistical Summary":
-    - Table showing:
-      - "Paired t-test (appropriateness): t=12.4, p<0.001"
-      - "Cohen's d = 1.68 (large effect)"
-      - "95% CI for preference: [73.2%, 80.8%]"
-      - "Inter-rater reliability (ICC): 0.78"
-
-    Title: "Figure 13: Human Evaluation Results (n=30 raters, 50 prompts)"
-
-]
+![alt text](13.png)
 
 **Key Findings**:
 
@@ -1267,40 +863,7 @@ To understand the contribution of each component, we conducted systematic ablati
 | Fixed α = 0.5      | 0.029       | 83.8%     | 0.84     | 71%        |
 | No Orthogonal Init | 0.052       | 74.6%     | 0.67     | 61%        |
 
-[
-IMAGE PLACEHOLDER:
-FULL IMAGE DESCRIPTION:
-An ablation study visualization showing a horizontal bar chart:
-
-    Y-axis: Ten model variants listed from top to bottom:
-    1. Full Model (highlighted in green)
-    2. No Hormone Block
-    3. Random K/V Init
-    4. Detached Gradients
-    5. No Diversity Loss
-    6. No Margin Loss
-    7. Fewer Hormones (3)
-    8. Fixed α = 0.1
-    9. Fixed α = 0.5
-    10. No Orthogonal Init
-
-    X-axis: Performance metrics (three sub-bars per variant)
-    - Blue bar: Hormone Accuracy (0-100%)
-    - Orange bar: Differentiation Range (0-1.0, scaled to 100)
-    - Green bar: Human Preference (0-100%)
-
-    The Full Model should show the longest bars
-    "Detached Gradients" should show dramatically short bars (demonstrating critical importance)
-    "Random K/V Init" should show moderately short bars
-
-    Annotations:
-    - Red X marks next to variants with significant degradation
-    - Green checkmarks next to variants with acceptable performance
-    - Arrow pointing to "Detached Gradients" with text "Critical: Gradient flow essential"
-
-    Title: "Figure 14: Ablation Study Results"
-
-]
+![alt text](14.png)
 
 ### 8.3 Key Insights from Ablations
 
@@ -1335,51 +898,7 @@ The learnable modulation strength marginally outperforms fixed values, learning 
 
 We visualize hormone attention patterns to understand what linguistic features each hormone attends to:
 
-[
-IMAGE PLACEHOLDER:
-FULL IMAGE DESCRIPTION:
-A 2x3 grid of attention heatmaps, one for each hormone:
-
-    Each heatmap shows:
-    - X-axis: Tokens from example input "You're so helpful, thank you!"
-    - Y-axis: Attention heads (4 heads stacked)
-    - Color intensity: Attention weight (darker = higher attention)
-
-    Panel 1 - DOPAMINE:
-    - High attention on "helpful", "thank", "you"
-    - Lighter attention on structural tokens
-    - Caption: "Attends to positive sentiment words"
-
-    Panel 2 - SEROTONIN:
-    - Distributed attention across sentence
-    - Slightly higher on "so", overall balance
-    - Caption: "Attends to tone modifiers and sentiment"
-
-    Panel 3 - CORTISOL:
-    - Very light attention (low activation for friendly input)
-    - Slight attention on punctuation
-    - Caption: "Minimal activation for non-threatening input"
-
-    Panel 4 - OXYTOCIN:
-    - High attention on "You're", "you"
-    - Moderate on "thank"
-    - Caption: "Attends to social/personal pronouns"
-
-    Panel 5 - ADRENALINE:
-    - Light overall attention
-    - Slight peaks at "!" marks
-    - Caption: "Attends to intensity markers"
-
-    Panel 6 - ENDORPHINS:
-    - High attention on "helpful", "thank you"
-    - Similar to dopamine pattern
-    - Caption: "Attends to positive expressions"
-
-    Color bar showing attention intensity (0 to 1)
-
-    Title: "Figure 15: Hormone Attention Patterns for Friendly Input"
-
-]
+![alt text](15.png)
 
 The attention visualizations reveal interpretable patterns:
 
@@ -1391,37 +910,7 @@ The attention visualizations reveal interpretable patterns:
 
 ### 8.5 t-SNE Visualization of Emotional Embeddings
 
-[
-IMAGE PLACEHOLDER:
-FULL IMAGE DESCRIPTION:
-A t-SNE scatter plot visualization of emotional embeddings:
-
-    The plot shows a 2D projection of the 512-dimensional emotional embeddings colored by tone:
-    - Green points: Friendly (clustered in top-right region)
-    - Gray points: Neutral (clustered in center)
-    - Red points: Rude (clustered in bottom-left region)
-    - Blue points: Sad (clustered in bottom area, separate from Rude)
-    - Orange points: Excited (clustered near Friendly but shifted)
-
-    Key observations to show:
-    - Clear separation between all five clusters
-    - Friendly and Excited clusters close but distinct (share positive valence but differ in arousal)
-    - Rude cluster opposite to Friendly (negative vs positive)
-    - Sad cluster between Neutral and Rude on valence axis
-    - Neutral cluster at center
-
-    Annotations:
-    - Dotted ellipses around each cluster
-    - Labels for each cluster
-    - Arrow showing "Positive Valence" direction
-    - Arrow showing "Arousal" direction (perpendicular)
-
-
-    Legend in corner showing color-tone mapping
-
-    Title: "Figure 16: t-SNE Visualization of Emotional Embeddings by Tone"
-
-]
+![alt text](16.png)
 
 The t-SNE visualization confirms that the hormone-to-embedding projection creates well-separated representations for different emotional tones, validating that the 6-dimensional hormone space captures meaningful emotional distinctions.
 
