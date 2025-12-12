@@ -1429,37 +1429,3 @@ return response, {hormone_names[i]: ĥ_i for i = 1..6}
 1. Include sarcasm-labeled training examples
 2. Incorporate multi-turn context for disambiguation
 3. Add uncertainty estimation to flag ambiguous cases for human review
-
----
-
-## Appendix E: Reproducibility Checklist
-
-- [x] Random seeds specified (42)
-- [x] Complete hyperparameter table provided
-- [x] Model architecture fully described
-- [x] Training algorithm pseudocode included
-- [x] Dataset examples provided
-- [x] Hardware requirements listed
-- [x] Software versions specified
-- [x] Loss function equations provided
-- [x] Evaluation metrics defined
-- [x] Statistical tests described
-- [x] Code repository link: https://github.com/eslam-reda-div/HELT
-- [ ] Pre-trained model weights (to be released upon publication)
-
----
-
-## Appendix F: Compute Resources
-
-| Resource             | Specification                                 |
-| -------------------- | --------------------------------------------- |
-| GPU                  | NVIDIA CUDA-compatible (tested on RTX series) |
-| GPU Memory           | ~4GB minimum for T5-small                     |
-| Training Time        | ~2-3 hours for 50 epochs                      |
-| Inference Time       | ~100ms per input                              |
-| Total Parameters     | ~60M                                          |
-| Trainable Parameters | ~25M                                          |
-
----
-
-_End of Paper_
