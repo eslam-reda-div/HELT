@@ -305,10 +305,6 @@ with top_col2:
         🟡 <b>Endorphins:</b> Relief/Euphoria
         </div>
         """, unsafe_allow_html=True)
-    if st.button("🗑️ Clear Chat"):
-        st.session_state.messages = []
-        st.session_state.hormones = {h: 0.5 for h in HORMONES}
-        st.rerun()
 
 st.divider()
 
